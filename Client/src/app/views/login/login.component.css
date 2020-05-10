@@ -1,0 +1,61 @@
+
+  
+  .facebook-btn {
+    background-color: #3c589c;
+color: white;
+  }
+  
+  .google-btn {
+    background-color: #df4b3b;
+    color: white;
+
+  }
+  
+  .form-reset,
+  .form-signup {
+    display: none;
+  }
+  
+  .form-signup .social-btn {
+    width: 210px;
+  }
+  
+  .form-signup input {
+    margin-bottom: 2px;
+  }
+  
+  .form-signup .social-login {
+    width: 210px !important;
+    margin: 0 auto;
+  }
+  
+  /* Mobile */
+  
+  @media screen and (max-width: 500px) {
+    .social-login {
+      width: 200px;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .social-btn {
+      font-size: 1.3rem;
+      font-weight: 100;
+      color: white;
+      width: 200px;
+      height: 56px;
+    }
+    .social-btn:nth-child(1) {
+      margin-bottom: 5px;
+    }
+    .social-btn span {
+      display: none;
+    }
+    .facebook-btn:after {
+      content: "Facebook";
+    }
+  
+    .google-btn:after {
+      content: "Google+";
+    }
+  }
+  
