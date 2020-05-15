@@ -5,7 +5,9 @@ import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-logi
 import { AuthService } from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
 import { stringify } from 'querystring';
-import {AuthGuard} from '../../auth.guard';
+import { AuthGuard } from '../../auth.guard';
+import { ApiService } from '../../services/api.service';
+import { ResponceFormat } from '../../constant/';
 
 
 @Component({
@@ -15,11 +17,13 @@ import {AuthGuard} from '../../auth.guard';
 })
 export class LoginComponent {
   signInForm: FormGroup;
+
   user: any;
   constructor(
     private router: Router,
     private authService: AuthService,
-    private authGuard : AuthGuard
+    private authGuard: AuthGuard,
+    private apiService: ApiService
 
   ) {
 
@@ -38,13 +42,22 @@ export class LoginComponent {
   signIn() {
     if (this.signInForm.invalid)
       return false
-    if (this.signInForm.value.email == 'bhushanjire@gmail.com' && this.signInForm.value.password == '123456') {
 
-      this.router.navigate(['postLogin']);
-      console.log('Login Successfull');
-    } else {
-      console.log('Wrong email/[assword');
+    let postData = {
+      data: {
+        emailId: this.signInForm.value.email,
+        password: this.signInForm.value.password
+      }
     }
+
+    this.apiService.login('LOGIN', postData).subscribe((responce: ResponceFormat) => {
+      if (responce.isSuccess) {
+        localStorage.setItem('MYAPP_USER', responce.data);
+        this.router.navigate(['dashboard']);
+      }
+    }, error => {
+      console.log('Error', error);
+    });
   }
 
   redirect() {

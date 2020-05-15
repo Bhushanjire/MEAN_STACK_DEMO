@@ -61,7 +61,6 @@ const comman = {
     },
     verifyToken: (req, res, next) => {
         const authorizationHeaader = req.headers.authorization;
-
         if (authorizationHeaader) {
             const token = req.headers.authorization.split(' ')[1];
             const options = { expiresIn: '24h', issuer: 'bhushan' };

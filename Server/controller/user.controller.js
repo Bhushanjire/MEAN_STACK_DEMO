@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const responceMessage = require('../messages/messages');
 const alertMessage = require('../messages/alertMessages');
-const env = require('dotenv').config()
+const env = require('dotenv').config();
 
 const userController = {
     userList: (req, res) => {
@@ -64,7 +64,7 @@ const userController = {
                                     data: userDetails,
                                 }, 'MYAPP', { expiresIn: '24h' });
                                 userDetails.token = token;
-                                res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, userDetails));
+                                res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, token));
                             } else {
                                 res.send(responceMessage.getResponce(400, false, alertMessage.LOGIN_FAIELD));
                             }
@@ -74,7 +74,7 @@ const userController = {
                     res.send(responceMessage.getResponce(400, false, alertMessage.LOGIN_FAIELD));
                 }
             }
-        });
+        }) //'_id firstName lastName mobileNo emailId'
     },
     updateUser: (req, res) => {
         let userId = req.body.userId;

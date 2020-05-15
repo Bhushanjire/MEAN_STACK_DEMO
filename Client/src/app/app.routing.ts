@@ -86,6 +86,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/widgets/widgets.module').then(m => m.WidgetsModule)
       },
       {
+        path: 'user',
+        loadChildren: () => import('./module/user/user.module').then(m => m.UserModule)
+      },
+      {
         path: '',
         redirectTo : 'home',
         pathMatch : 'full'
@@ -101,7 +105,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{useHash: true })],
   exports: [RouterModule],
   providers: [AuthGuard],
 

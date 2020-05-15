@@ -15,8 +15,8 @@ export const navItems: INavData[] = [
     name: 'Theme'
   },
   {
-    name: 'Colors',
-    url: '/dashboard/theme/colors',
+    name: 'Users',
+    url: '/dashboard/user',
     icon: 'icon-drop'
   },
   {
