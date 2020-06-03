@@ -21,7 +21,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Typography',
-    url: '/theme/typography',
+    url: '/dashboard/theme/typography',
     icon: 'icon-pencil'
   },
   {
@@ -35,63 +35,63 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Cards',
-        url: '/base/cards',
+        url: '/dashboard/base/cards',
         icon: 'icon-puzzle'
       },
       {
         name: 'Carousels',
-        url: '/base/carousels',
+        url: '/dashboard/base/carousels',
         icon: 'icon-puzzle'
       },
       {
         name: 'Collapses',
-        url: '/base/collapses',
+        url: '/dashboard/base/collapses',
         icon: 'icon-puzzle'
       },
       {
         name: 'Forms',
-        url: '/base/forms',
+        url: '/dashboard/base/forms',
         icon: 'icon-puzzle'
       },
       {
         name: 'Navbars',
-        url: '/base/navbars',
+        url: '/dashboard/base/navbars',
         icon: 'icon-puzzle'
 
       },
       {
         name: 'Pagination',
-        url: '/base/paginations',
+        url: '/dashboard/base/paginations',
         icon: 'icon-puzzle'
       },
       {
         name: 'Popovers',
-        url: '/base/popovers',
+        url: '/dashboard/base/popovers',
         icon: 'icon-puzzle'
       },
       {
         name: 'Progress',
-        url: '/base/progress',
+        url: '/dashboard/base/progress',
         icon: 'icon-puzzle'
       },
       {
         name: 'Switches',
-        url: '/base/switches',
+        url: '/dashboard/base/switches',
         icon: 'icon-puzzle'
       },
       {
         name: 'Tables',
-        url: '/base/tables',
+        url: '/dashboard/base/tables',
         icon: 'icon-puzzle'
       },
       {
         name: 'Tabs',
-        url: '/base/tabs',
+        url: '/dashboard/base/tabs',
         icon: 'icon-puzzle'
       },
       {
         name: 'Tooltips',
-        url: '/base/tooltips',
+        url: '/dashboard/base/tooltips',
         icon: 'icon-puzzle'
       }
     ]
@@ -103,24 +103,24 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Buttons',
-        url: '/buttons/buttons',
+        url: '/dashboard/buttons/buttons',
         icon: 'icon-cursor'
       },
       {
         name: 'Dropdowns',
-        url: '/buttons/dropdowns',
+        url: '/dashboard/buttons/dropdowns',
         icon: 'icon-cursor'
       },
       {
         name: 'Brand Buttons',
-        url: '/buttons/brand-buttons',
+        url: '/dashboard/buttons/brand-buttons',
         icon: 'icon-cursor'
       }
     ]
   },
   {
     name: 'Charts',
-    url: '/charts',
+    url: '/dashboard/charts',
     icon: 'icon-pie-chart'
   },
   {
@@ -130,7 +130,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'CoreUI Icons',
-        url: '/icons/coreui-icons',
+        url: '/dashboard/icons/coreui-icons',
         icon: 'icon-star',
         badge: {
           variant: 'success',
@@ -139,12 +139,12 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Flags',
-        url: '/icons/flags',
+        url: '/dashboard/icons/flags',
         icon: 'icon-star'
       },
       {
         name: 'Font Awesome',
-        url: '/icons/font-awesome',
+        url: '/dashboard/icons/font-awesome',
         icon: 'icon-star',
         badge: {
           variant: 'secondary',
@@ -153,7 +153,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Simple Line Icons',
-        url: '/icons/simple-line-icons',
+        url: '/dashboard/icons/simple-line-icons',
         icon: 'icon-star'
       }
     ]
@@ -165,17 +165,17 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Alerts',
-        url: '/notifications/alerts',
+        url: '/dashboard/notifications/alerts',
         icon: 'icon-bell'
       },
       {
         name: 'Badges',
-        url: '/notifications/badges',
+        url: '/dashboard/notifications/badges',
         icon: 'icon-bell'
       },
       {
         name: 'Modals',
-        url: '/notifications/modals',
+        url: '/dashboard/notifications/modals',
         icon: 'icon-bell'
       }
     ]

@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
-import { AuthService } from "angularx-social-login";
-import { SocialUser } from "angularx-social-login";
-import { stringify } from 'querystring';
 import { AuthGuard } from '../../auth.guard';
 import { ApiService } from '../../services/api.service';
 import { ResponceFormat } from '../../constant/';
+import { SocialSiteLoginService } from '../../services/social-site-login.service';
+import { ToastService } from '../../services/toast.service';
 
 
 @Component({
@@ -21,18 +19,16 @@ export class LoginComponent {
   user: any;
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private socialSiteLoginService: SocialSiteLoginService,
     private authGuard: AuthGuard,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastService: ToastService
 
   ) {
 
   }
   ngOnInit() {
     this.authGuard.isLoggedIn();
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-    });
     this.signInForm = new FormGroup({
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required)
@@ -53,9 +49,13 @@ export class LoginComponent {
     this.apiService.login('LOGIN', postData).subscribe((responce: ResponceFormat) => {
       if (responce.isSuccess) {
         localStorage.setItem('MYAPP_USER', responce.data);
+        this.toastService.successMessage(responce.messages);
         this.router.navigate(['dashboard']);
+      } else {
+        this.toastService.errorMessage(responce.messages);
       }
     }, error => {
+      this.toastService.errorMessage(error);
       console.log('Error', error);
     });
   }
@@ -65,20 +65,50 @@ export class LoginComponent {
   }
 
   signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(userDetails => {
-      localStorage.setItem('MYAPP_USER', JSON.stringify(userDetails));
-      this.router.navigate(['dashboard']);
-    }).catch(err => console.log(err));;
+    this.socialSiteLoginService.loginSignUpGoogle(userDetails => {
+      // console.log('loginSignUpGoogle',userDetails);
+      
+      let postData = {
+        data: {
+          userDetails: userDetails,
+          siteName: 'google'
+        }
+      }
+      this.apiService.request('LOGIN_WITH_SOCIAL_SITE', postData).subscribe(tokenReaponce => {
+        localStorage.setItem('MYAPP_USER', JSON.stringify(tokenReaponce));
+        this.router.navigate(['dashboard']);
+      });
+    })
   }
 
   signInWithFB(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(userDetails => {
-      localStorage.setItem('MYAPP_USER', JSON.stringify(userDetails));
-      this.router.navigate(['dashboard']);
-    }).catch(err => console.log(err));
+    this.socialSiteLoginService.loginSignUpFacebook(userDetails => {
+      let postData = {
+        data: {
+          userDetails: userDetails.facebook,
+          siteName: 'facebook'
+        }
+      }
+      this.apiService.request('LOGIN_WITH_SOCIAL_SITE', postData).subscribe(tokenReaponce => {
+        localStorage.setItem('MYAPP_USER', JSON.stringify(tokenReaponce));
+        this.router.navigate(['dashboard']);
+      });
+    })
   }
   signOut(): void {
-    this.authService.signOut();
+    // this.authService.signOut();
+  }
+
+  showStandard() {
+    this.toastService.show('I am a standard toast');
+  }
+
+  showSuccess() {
+    this.toastService.show('I am a success toast', { classname: 'bg-success text-light', delay: 10000 });
+  }
+
+  showDanger(dangerTpl) {
+    this.toastService.show(dangerTpl, { classname: 'bg-danger text-light', delay: 15000 });
   }
 
 }

@@ -1,26 +1,36 @@
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { navItems } from '../../_nav';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
-export class DefaultLayoutComponent {
+export class DefaultLayoutComponent implements OnInit {
   public sidebarMinimized = false;
   public navItems = navItems;
+  loginUser;
 
   constructor(
-    private router : Router
-  ){
+    private router: Router,
+    private apiService: ApiService
+  ) {
 
+  }
+
+  ngOnInit() {
+    this.loginUser = this.apiService.getUserDetails(localStorage.getItem('MYAPP_USER'));
   }
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;
   }
-  logout(){
+  logout() {
     localStorage.removeItem('MYAPP_USER');
     this.router.navigate(['login']);
+  }
+  redirect(route){
+    this.router.navigate([route]);
   }
 }

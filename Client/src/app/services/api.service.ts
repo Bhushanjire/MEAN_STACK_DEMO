@@ -42,8 +42,6 @@ export class ApiService {
   login(name: string, params?: ApiParam){
     const endpoint = this.getEndpoint(name);
     const url = this.addPathParamsIfAny(endpoint.url, params);
-    console.log('URL',url);
-    
     return this.http.post(url,params.data);
   }
 
@@ -65,7 +63,7 @@ export class ApiService {
       this.http
         .request(method, url, requestOptions)
         .pipe(map(res => this.extractData<ApiResponse>(res)))
-        // .pipe(map(res => this.extractData<any>(res)))
+        .pipe(map(res => this.extractData<any>(res)))
         .pipe(catchError(this.exceptionService.catchBadResponse))
         // .pipe(finalize(() => this.loadingService.hide()))
     );
@@ -134,6 +132,7 @@ export class ApiService {
     const decodedToken = this.helper.decodeToken(data);
     const expirationDate = this.helper.getTokenExpirationDate(data);
     const isExpired = this.helper.isTokenExpired(data);
-    return JSON.parse(JSON.stringify(decodedToken));
+    
+    return JSON.parse(JSON.stringify(decodedToken.data));
   }
 }

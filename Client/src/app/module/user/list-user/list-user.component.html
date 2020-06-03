@@ -1,3 +1,14 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="active-cyan-3 active-cyan-4 mb-4">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" #searchTextRef
+                (keyup)="searchRecord(searchTextRef.value)">
+        </div>
+    </div>
+    <div class="col-md-4 text-right">
+        <button type="button" class="btn btn-primary">Add</button>
+    </div>
+</div>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -6,15 +17,36 @@
             <th scope="col">Last Name</th>
             <th scope="col">Mobile</th>
             <th scope="col">Email ID</th>
+            <th scope="col">City</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of userList;let i=index">
+        <tr *ngFor="let user of userList| paginate: { 
+        itemsPerPage: pageSize,
+        currentPage: currentPage,
+        totalItems: totalRecords };let i=index">
             <td scope="row">{{i+1}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.mobileNo}}</td>
             <td>{{user.emailId}}</td>
+            <td>{{user.city.name}}</td>
+            <td>
+                <i class="fa fa-pencil hand-cursor" aria-hidden="true"></i>&nbsp;
+                <i class="fa fa-trash hand-cursor" aria-hidden="true" (click)="isDelete()"></i>
+            </td>
         </tr>
     </tbody>
 </table>
+<!-- <pagination-controls (pageChange)="p2 = $event"></pagination-controls> -->
+<div class="row">
+    <div class="col-md-12 text-center">
+        <pagination-controls (pageChange)="pageChanged($event)" (pageBoundsCorrection)="pageChanged($event)" maxSize="9"
+            directionLinks="true" autoHide="true" responsive="true" previousLabel="Previous" nextLabel="Next"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+    </div>
+</div>
+<!-- <app-confirm-popup></app-confirm-popup> -->

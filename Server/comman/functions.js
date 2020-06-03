@@ -67,11 +67,11 @@ const comman = {
             try {
                 jwt.verify(token, 'MYAPP', (error, result) => {
                     if (error) {
-                        return res.send(responceMessage.getResponce(404, false, error));
+                        return res.send(responceMessage.getResponce(401, false, error));
                     } else if (result) {
                         next()
                     } else {
-                        res.send(responceMessage.getResponce(404, false, alertMessages.TOKEN_EXPIRED));
+                        res.send(responceMessage.getResponce(401, false, alertMessages.TOKEN_EXPIRED));
                     }
                 });
             } catch (error) {

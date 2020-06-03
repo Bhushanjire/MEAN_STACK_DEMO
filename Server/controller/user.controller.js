@@ -9,19 +9,62 @@ const saltRounds = 10;
 const responceMessage = require('../messages/messages');
 const alertMessage = require('../messages/alertMessages');
 const env = require('dotenv').config();
+const CryptoJS = require("crypto-js");
+const waterfall = require('async-waterfall');
+
+let tokenData = {
+    id: null,
+    first_name: null,
+    last_name: null,
+    email: null
+}
+
 
 const userController = {
     userList: (req, res) => {
-        userSchema.find({}, function (err, userList) {
-            err ? res.send(err) : res.send(responceMessage.getResponce(200, true, alertMessage.ALL_USER_LIST, userList));
-        }).populate({
-            path: 'city',
-            model: 'City'
-        }).sort('-city')
-        //.where('firstName').equals('Bhushan')
-    },
+        let limit = req.body.pageSize;
+        let offset = ((req.body.offset - 1) * limit);
+        let searchText = req.body.searchText;
 
+        var query = {}
+        if (req.body.searchText) {
+            query = { $or: [{ firstName: { $regex: req.body.searchText, $options: 'i' } }, { lastName: { $regex: req.body.searchText, $options: 'i' } }, { mobileNo: { $regex: req.body.searchText, $options: 'i' } }, { emailId: { $regex: req.body.searchText, $options: 'i' } }, { 'City.name': { $regex: req.body.searchText, $options: 'i' } }] }
+        }
+
+
+        userSchema.count(query, function (error, total) {
+            userSchema.find(query, function (err, userList) {
+                err ? res.send(err) : res.send(responceMessage.getResponce(200, true, alertMessage.ALL_USER_LIST, {
+                    users: userList,
+                    totalRecords: total
+                }));
+            }).populate({
+                path: 'city',
+                model: 'City',
+                // match: { name: { $regex: searchText }, $options: 'i' }
+            }).sort('firstName').skip(offset).limit(limit);
+        })
+    },
     addUser: (req, res) => {
+
+        // waterfall([
+        //     function(callback){
+        //       userSchema.findOne({emailId : req.body.emailId},(error,result)=>{
+        //         callback(null, 'three');
+        //       })
+        //     },
+        //     function(arg1, arg2, callback){
+        //       callback(null, 'three');
+        //     // },
+        //     function(arg1, callback){
+        //       // arg1 now equals 'three'
+        //       callback(null, 'done');
+        //     }
+        //   ], function (err, result) {
+        //     // result now equals 'done'
+        //   });
+
+
         bcrypt.genSalt(saltRounds, function (err, salt) {
             bcrypt.hash(req.body.password, salt, function (err, hash) {
                 req.body.password = hash;
@@ -38,7 +81,6 @@ const userController = {
                 });
             });
         });
-
     },
     login: (req, res) => {
         let emailId = req.body.emailId;
@@ -60,10 +102,17 @@ const userController = {
                             res.send(responceMessage.getResponce(404, false, alertMessage.LOGIN_FAIELD));
                         } else {
                             if (isMatched) {
+                                console.log('login user details', userDetails)
+                                tokenData = {
+                                    id: userDetails._id,
+                                    first_name: userDetails.firstName,
+                                    last_name: userDetails.lastName,
+                                    email: userDetails.emailId
+                                }
                                 const token = jwt.sign({
-                                    data: userDetails,
+                                    data: tokenData,
                                 }, 'MYAPP', { expiresIn: '24h' });
-                                userDetails.token = token;
+
                                 res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, token));
                             } else {
                                 res.send(responceMessage.getResponce(400, false, alertMessage.LOGIN_FAIELD));
@@ -124,8 +173,6 @@ const userController = {
         let mobileNo = req.body.mobileNo;
         const result = comman.sendSMS(mobileNo, message);
         console.log('result', result);
-
-
         if (result) {
             res.send({
                 message: "SMS send successfully..."
@@ -135,6 +182,31 @@ const userController = {
                 message: "SMS sending failed....."
             })
         }
-    }
+    },
+    loginWithSocialSite: (req, res) => {
+        let userDetails = req.body.userDetails;
+        let siteName = req.body.siteName;
+        // const [userDetails,siteName] = req.body;
+
+        if(siteName=='facebook'){
+            tokenData = {
+                id: userDetails.id,
+                first_name: userDetails.first_name,
+                last_name: userDetails.last_name,
+                email: userDetails.email
+            }
+        }else if(siteName=='google'){
+            tokenData = {
+                id: userDetails.id,
+                first_name: userDetails.firstName,
+                last_name: userDetails.lastName,
+                email: userDetails.email
+            } 
+        }
+        const token = jwt.sign({
+            data: tokenData,
+        }, 'MYAPP', { expiresIn: '24h' });
+        res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, token));
+    },
 }
 module.exports = userController;
