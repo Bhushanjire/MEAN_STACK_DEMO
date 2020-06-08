@@ -31,6 +31,19 @@ const userSchema = mongoose.Schema({
     salt : {
         type : String,
         require : true
+    },
+    isVerified :{
+        type : String,
+        require : true,
+        default : false
+    },
+    socialSiteId :{
+        type : String,
+        default : null
+    },
+    socialSiteName :{
+        type : String,
+        default : null
     }
 });
 const Users = mongoose.model('Users',userSchema);

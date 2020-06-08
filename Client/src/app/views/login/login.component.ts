@@ -75,7 +75,7 @@ export class LoginComponent {
         }
       }
       this.apiService.request('LOGIN_WITH_SOCIAL_SITE', postData).subscribe(tokenReaponce => {
-        localStorage.setItem('MYAPP_USER', JSON.stringify(tokenReaponce));
+        localStorage.setItem('MYAPP_USER', tokenReaponce.data);
         this.router.navigate(['dashboard']);
       });
     })
@@ -90,7 +90,7 @@ export class LoginComponent {
         }
       }
       this.apiService.request('LOGIN_WITH_SOCIAL_SITE', postData).subscribe(tokenReaponce => {
-        localStorage.setItem('MYAPP_USER', JSON.stringify(tokenReaponce));
+        localStorage.setItem('MYAPP_USER', tokenReaponce.data);
         this.router.navigate(['dashboard']);
       });
     })

@@ -46,25 +46,6 @@ const userController = {
         })
     },
     addUser: (req, res) => {
-
-        // waterfall([
-        //     function(callback){
-        //       userSchema.findOne({emailId : req.body.emailId},(error,result)=>{
-        //         callback(null, 'three');
-        //       })
-        //     },
-        //     function(arg1, arg2, callback){
-        //       callback(null, 'three');
-        //     // },
-        //     function(arg1, callback){
-        //       // arg1 now equals 'three'
-        //       callback(null, 'done');
-        //     }
-        //   ], function (err, result) {
-        //     // result now equals 'done'
-        //   });
-
-
         bcrypt.genSalt(saltRounds, function (err, salt) {
             bcrypt.hash(req.body.password, salt, function (err, hash) {
                 req.body.password = hash;
@@ -75,7 +56,7 @@ const userController = {
                     } else {
                         res.send(responceMessage.getResponce(200, true, alertMessage.ADD_USER, result));
                         let subject = 'Verify User';
-                        let body = "Hello " + req.body.firstName + " " + req.body.lastName + "Please click here to verify";
+                        let body = "Hello " + req.body.firstName + " " + req.body.lastName + " Please click here to verify";
                         comman.sendEmail(req.body.emailId, subject, body);
                     }
                 });
@@ -102,7 +83,6 @@ const userController = {
                             res.send(responceMessage.getResponce(404, false, alertMessage.LOGIN_FAIELD));
                         } else {
                             if (isMatched) {
-                                console.log('login user details', userDetails)
                                 tokenData = {
                                     id: userDetails._id,
                                     first_name: userDetails.firstName,
@@ -185,28 +165,26 @@ const userController = {
     },
     loginWithSocialSite: (req, res) => {
         let userDetails = req.body.userDetails;
-        let siteName = req.body.siteName;
-        // const [userDetails,siteName] = req.body;
-
-        if(siteName=='facebook'){
-            tokenData = {
-                id: userDetails.id,
-                first_name: userDetails.first_name,
-                last_name: userDetails.last_name,
-                email: userDetails.email
+        userSchema.findOne({ emailId: userDetails.email }, (error, result) => {
+            if (error) {
+                res.send(responceMessage.getResponce(400, false, error));
+            } else {
+                if (result) {
+                    tokenData = {
+                        id: result._id,
+                        first_name: result.firstName,
+                        last_name: result.lastName,
+                        email: result.emailId
+                    }
+                    const token = jwt.sign({
+                        data: tokenData,
+                    }, 'MYAPP', { expiresIn: '24h' });
+                    res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, token));
+                } else {
+                    res.send(responceMessage.getResponce(400, false, alertMessage.LOGIN_FAIELD));
+                }
             }
-        }else if(siteName=='google'){
-            tokenData = {
-                id: userDetails.id,
-                first_name: userDetails.firstName,
-                last_name: userDetails.lastName,
-                email: userDetails.email
-            } 
-        }
-        const token = jwt.sign({
-            data: tokenData,
-        }, 'MYAPP', { expiresIn: '24h' });
-        res.send(responceMessage.getResponce(200, true, alertMessage.LOGIN_SUCCESS, token));
+        });
     },
 }
 module.exports = userController;

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SocialSiteLoginService } from '../../services/social-site-login.service';
+import { ResponceFormat } from '../../constant/';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -26,14 +28,20 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+
+    console.log('registerForm',this.registerForm);
+    
     if (this.registerForm.valid) {
       let postData = {
         data: {
-
+          firstName : this.registerForm.controls.firstName.value,
+          lastName : this.registerForm.controls.lastName.value,
+          emailId : this.registerForm.controls.emailId.value,
+          password : this.registerForm.controls.password.value
         }
       }
-      this.apiService.register('REGISTER', postData).subscribe(responce => {
-
+      this.apiService.register('REGISTER', postData).subscribe((responce : ResponceFormat) => {
+        console.log('REGISTER',responce);
       });
     }
   }

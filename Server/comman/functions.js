@@ -8,9 +8,12 @@ require('dotenv').config();
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_ID, process.env.TWILIO_AUTH_TOKEN);
 
 const comman = {
-    sendEmail: (toEmail, subject, body, password=null) => {
+    sendEmail: (toEmail, subject, body, password = null) => {
         const transporter = nodemailer.createTransport({
             servicee: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
             auth: {
                 user: process.env.GMAIL_EMAIL,
                 pass: process.env.GMAIL_PASSWORD
@@ -27,8 +30,8 @@ const comman = {
 
         const result = transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log('not send',error);
-                
+                console.log('not send', error);
+
                 return error;
             } else {
                 console.log('send');
