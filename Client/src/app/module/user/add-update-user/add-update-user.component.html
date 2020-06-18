@@ -1,1 +1,71 @@
-<p>add-update-user works!</p>
+<div class="form-container">
+  <form class="form-horizontal" [formGroup]="userForm" (ngSubmit)="addUpdateUser()">
+    <div class="row mb-2">
+      <div class="col-md-2 pt-1 text-right">
+        <label> First Name</label>
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          placeholder="Enter First name"
+          name="firstName"
+          formControlName="firstName"
+        />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 pt-1 text-right">
+        Last Name
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          placeholder="Enter Last name"
+          name="lastName"
+          formControlName="lastName"
+        />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 pt-1 text-right">
+        Email
+      </div>
+      <div class="col-md-10">
+        <input
+          type="email"
+          class="form-control"
+          id="emailId"
+          placeholder="Enter Email Id"
+          name="emailId"
+          formControlName="emailId"
+        />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 pt-1 text-right">
+        Mobile No.
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          id="mobileNo"
+          placeholder="Enter Mobile No"
+          name="mobileNo"
+          formControlName="mobileNo"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="button" class="btn btn-danger">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

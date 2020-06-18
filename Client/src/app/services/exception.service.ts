@@ -25,7 +25,9 @@ export class ExceptionService {
     // private toastService: ToastService,
     private router: Router,
     // private appStorage: AppStorage
-    ) { }
+    ) { 
+      
+    }
 
   /**
    * @method log

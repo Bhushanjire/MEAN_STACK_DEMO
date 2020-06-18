@@ -8,6 +8,7 @@ const token = require('../comman/functions');
 
 //User Routes
 router.post('/list-user', token.verifyToken,userController.userList);
+router.post('/get-user-by-id', token.verifyToken,userController.getUserById);
 router.post('/add-user',userController.addUser);
 router.post('/add-user-csv',userController.addUserBuCSV);
 router.post('/send-email',userController.sendEmail);
@@ -15,8 +16,6 @@ router.post('/send-sms',userController.sendSMS);
 router.post('/login',userController.login);
 router.put('/update-user', token.verifyToken,userController.updateUser);
 router.post('/login-with-social-site', userController.loginWithSocialSite);
-
-
 
 
 

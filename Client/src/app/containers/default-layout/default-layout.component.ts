@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { navItems } from '../../_nav';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class DefaultLayoutComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private activatedRoute : ActivatedRoute
   ) {
 
   }
@@ -31,6 +32,6 @@ export class DefaultLayoutComponent implements OnInit {
     this.router.navigate(['login']);
   }
   redirect(route){
-    this.router.navigate([route]);
+    this.router.navigate([route],{relativeTo : this.activatedRoute});
   }
 }

@@ -4,6 +4,7 @@ import { ApiResponse } from '../../../services/api.service';
 import { UserModel } from '../../../models/user.model';
 import { ApiParam } from '../../../services/api.service';
 import {PopupService} from '../../../services/popup.service';
+import {Router} from '@angular/router';
 
 
 
@@ -19,13 +20,16 @@ export class ListUserComponent implements OnInit {
   totalRecords = 0;
   userList: UserModel;
   searchText = null;
+  userId =null;
   constructor(
     private apiService: ApiService,
-    private popupService : PopupService
+    private popupService : PopupService,
+    private router : Router
   ) { }
 
   ngOnInit(): void {
     this.getUserList();
+   
   }
 
   pageChanged(event) {
@@ -56,5 +60,8 @@ export class ListUserComponent implements OnInit {
 
   isDelete(){
     this.popupService.openConfirmPopup()
+  }
+  editUser(userId){
+      this.router.navigate(['/dashboard/user/update',{id : userId}]);
   }
 }

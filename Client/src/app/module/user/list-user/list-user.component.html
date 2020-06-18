@@ -33,7 +33,7 @@
             <td>{{user.emailId}}</td>
             <td>{{user.city.name}}</td>
             <td>
-                <i class="fa fa-pencil hand-cursor" aria-hidden="true"></i>&nbsp;
+                <i class="fa fa-pencil hand-cursor" aria-hidden="true" (click)="editUser(user._id)"></i>&nbsp;
                 <i class="fa fa-trash hand-cursor" aria-hidden="true" (click)="isDelete()"></i>
             </td>
         </tr>

@@ -22,7 +22,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'add-update',
+        path: 'update',
         component: AddUpdateUserComponent,
         data: {
           title: 'Add-Update'
@@ -43,7 +43,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: '',
+        path: '**',
         redirectTo: 'list',
         pathMatch: 'full'
       }

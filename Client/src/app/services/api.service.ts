@@ -63,7 +63,7 @@ export class ApiService {
       this.http
         .request(method, url, requestOptions)
         .pipe(map(res => this.extractData<ApiResponse>(res)))
-        .pipe(map(res => this.extractData<any>(res)))
+        // .pipe(map(res => this.extractData<any>(res)))
         .pipe(catchError(this.exceptionService.catchBadResponse))
         // .pipe(finalize(() => this.loadingService.hide()))
     );

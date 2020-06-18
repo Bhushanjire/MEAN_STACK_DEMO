@@ -8,6 +8,7 @@ const alertMessages = {
     UPDATE_USER : 'User updated successfully',
     ADD_ERROR : 'Error while adding',
     UPDATE_ERROR : 'Error while updating',
+    GET_USER_BY_ID :'User data retrived successfully'
 
 }
 module.exports = alertMessages;

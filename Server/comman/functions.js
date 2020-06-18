@@ -66,7 +66,7 @@ const comman = {
         const authorizationHeaader = req.headers.authorization;
         if (authorizationHeaader) {
             const token = req.headers.authorization.split(' ')[1];
-            const options = { expiresIn: '24h', issuer: 'bhushan' };
+            const options = { expiresIn: '2h', issuer: 'bhushan' };
             try {
                 jwt.verify(token, 'MYAPP', (error, result) => {
                     if (error) {
@@ -74,7 +74,7 @@ const comman = {
                     } else if (result) {
                         next()
                     } else {
-                        res.send(responceMessage.getResponce(401, false, alertMessages.TOKEN_EXPIRED));
+                       return res.send(responceMessage.getResponce(401, false, alertMessages.TOKEN_EXPIRED));
                     }
                 });
             } catch (error) {

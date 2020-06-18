@@ -61,9 +61,8 @@ export class EndpointService {
       { name: 'LOGIN', url: 'login', method: 'POST' },
       { name: 'ALL_USER', url: 'list-user', method: 'POST' },
       { name: 'LOGIN_WITH_SOCIAL_SITE', url: 'login-with-social-site', method: 'POST' },
-
-
-      
+      { name: 'GET_USER_BY_ID', url: 'get-user-by-id', method: 'POST' },
+      { name: 'UPDATE_USER', url: 'update-user', method: 'PUT' },
     ];
   }
 }

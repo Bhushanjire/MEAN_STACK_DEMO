@@ -17,14 +17,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    console.log('userDetails',this.apiService.getUserDetails(localStorage.getItem('MYAPP_USER')));
-    
-    this.apiService.request('ALL_USER').subscribe((Response : ResponceFormat)=>{
-
-      console.log('ALL_USER',Response);
-      
-    })
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
