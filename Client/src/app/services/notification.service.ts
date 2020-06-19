@@ -27,8 +27,6 @@ export class NotificationService {
     );
   }
   receiveMessage() {
-    console.log('receiveMessage called');
-    
     this.angularFireMessaging.messages.subscribe(
       (payload) => {
         console.log("new message received. ", payload);

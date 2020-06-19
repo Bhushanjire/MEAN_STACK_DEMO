@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   sendNotification(){
     var i=0;
     this.message = this.notificationService.currentMessage.next(i++);
-    console.log('function called');
+    // console.log('function called');
     
   }
 }

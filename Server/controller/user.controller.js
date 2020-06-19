@@ -65,34 +65,89 @@ const userController = {
     });
   },
   addUser: (req, res) => {
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-      bcrypt.hash(req.body.password, salt, function (err, hash) {
-        req.body.password = hash;
-        req.body.salt = salt;
-        userSchema.create(req.body, function (err, result) {
-          if (err) {
-            res.send(responceMessage.getResponce(400, false, err));
-          } else {
-            res.send(
-              responceMessage.getResponce(
-                200,
-                true,
-                alertMessage.ADD_USER,
-                result
-              )
-            );
-            let subject = "Verify User";
-            let body =
-              "Hello " +
-              req.body.firstName +
-              " " +
-              req.body.lastName +
-              " Please click here to verify";
-            comman.sendEmail(req.body.emailId, subject, body);
-          }
-        });
-      });
-    });
+    waterfall(
+      [
+        function (callback) {
+          bcrypt.genSalt(saltRounds, function (err, salt) {
+            req.body.salt = salt;
+            callback(null, salt);
+          });
+        },
+        function (salt, callback) {
+          bcrypt.hash(req.body.password, salt, function (err, hash) {
+            if (err) {
+              callback(err, null);
+            } else {
+              req.body.password = hash;
+              callback(null, hash);
+            }
+          });
+        },
+        function (hash, callback) {
+          userSchema.create(req.body, function (err, result) {
+            if (err) {
+              callback(err, null);
+            } else {
+              callback(err, result);
+            }
+          });
+        },
+        function (result, callback) {
+          let subject = "Verify User";
+          let body =
+            "Hello " +
+            req.body.firstName +
+            " " +
+            req.body.lastName +
+            " Please click here to verify";
+          comman.sendEmail(req.body.emailId, subject, body);
+          callback(null, result);
+        },
+      ],
+      function (err, result) {
+        if (!err) {
+          res.send(
+            responceMessage.getResponce(
+              200,
+              true,
+              alertMessage.ADD_USER,
+              result
+            )
+          );
+        } else {
+          res.send(responceMessage.getResponce(400, false, err));
+        }
+      }
+    );
+
+    // bcrypt.genSalt(saltRounds, function (err, salt) {
+    //   bcrypt.hash(req.body.password, salt, function (err, hash) {
+    //     req.body.password = hash;
+    //     req.body.salt = salt;
+    //     userSchema.create(req.body, function (err, result) {
+    //       if (err) {
+    //         res.send(responceMessage.getResponce(400, false, err));
+    //       } else {
+    //         res.send(
+    //           responceMessage.getResponce(
+    //             200,
+    //             true,
+    //             alertMessage.ADD_USER,
+    //             result
+    //           )
+    //         );
+    //         let subject = "Verify User";
+    //         let body =
+    //           "Hello " +
+    //           req.body.firstName +
+    //           " " +
+    //           req.body.lastName +
+    //           " Please click here to verify";
+    //         comman.sendEmail(req.body.emailId, subject, body);
+    //       }
+    //     });
+    //   });
+    // });
   },
   login: (req, res) => {
     let emailId = req.body.emailId;
